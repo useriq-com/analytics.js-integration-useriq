@@ -28,4 +28,23 @@ describe('UserIQ', function() {
   it('should have the correct options', function() {
     analytics.compare(UserIQ, integration('UserIQ').option('siteId', ''));
   });
+
+  describe('before loading', function() {
+    this.beforeEach(function() {
+      analytics.stub(userIQ, 'load');
+    });
+
+    it('should create window._uiq', function() {
+      analytics.assert(!window._uiq);
+      analytics.initialize();
+      analytics.page();
+      analytics.assert(window._uiq);
+    });
+
+    it('should call #load', function(){
+      analytics.initialize();
+      analytics.page();
+      analytics.called(userIQ.load);
+    });
+  });
 });
